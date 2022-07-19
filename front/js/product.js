@@ -79,7 +79,7 @@ btn.addEventListener("click", () => {
 
 
     if (colorChoice == null || colorChoice === "" || inputQty == null || inputQty == 0) {
-        alert("selectionner une couleur et une quantité")
+        alert("Veuillez selectionner une couleur et une quantité")
     }
 
 
@@ -89,21 +89,21 @@ btn.addEventListener("click", () => {
 
 
 
-const inputQty = document.getElementById("quantity");
-let finalQty = "";
+// const inputQty = document.getElementById("quantity");
+// let finalQty = "";
 
-inputQty.addEventListener("input", (e) => {
-    finalQty = e.target.value;
-    console.log(finalQty)
-});
+// inputQty.addEventListener("input", (e) => {
+//     finalQty = e.target.value;
+//     console.log(finalQty)
+// });
 
 
-const colorChoice = document.getElementById("colors");
-let finalColor = "";
+// const colorChoice = document.getElementById("colors");
+// let finalColor = "";
 
-colorChoice.addEventListener("input", (e) => {
-    finalColor = e.target.value;
-    console.log(finalColor)
-})
+// colorChoice.addEventListener("input", (e) => {
+//     finalColor = e.target.value;
+//     console.log(finalColor)
+// })
 
 
