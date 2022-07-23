@@ -36,8 +36,6 @@ const displayArticle = (article) => {
 }
 
 
-
-
 const btn = document.getElementById("addToCart");
 
 btn.addEventListener("click", () => {

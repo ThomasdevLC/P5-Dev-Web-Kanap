@@ -80,6 +80,22 @@ function addToCart(item, canapData) {
     displayQuantity.value = item.quantity
 
 
+    // UPDATE
+    displayQuantity.addEventListener("change", quantityUpdate)
+
+    function quantityUpdate(event) {
+        let input = event.target
+        if (isNaN(input.value) || input.value <= 0) {
+            input.value = 1
+
+        }
+
+        console.log(input)
+
+    }
+
+
+
     content.appendChild(quantityBox);
     quantityBox.appendChild(quantity);
     quantity.appendChild(quantityText);
@@ -100,6 +116,70 @@ function addToCart(item, canapData) {
 
 
     // CALCULATE TOTAL 
+
+
+    const totalQty = document.getElementById("totalQuantity");
+
+    let total = 0
+    storageCart.forEach(item => {
+
+        let eachQty = item.quantity
+        total = total + eachQty
+    })
+    totalQty.textContent = total
+
+
+    const totalPrice = document.getElementById("totalPrice");
+
+    let totalPriceText = 0
+    storageCart.forEach(item => {
+
+        let eachQty = item.quantity
+        totalPriceText = totalPriceText + (eachQty * canapData.price)
+    })
+
+    totalPrice.textContent = totalPriceText
+
+
+
+
+
+
+
+
+
+    const deleteBtn = document.querySelectorAll(".cart__item__content__settings__delete")
+    // for (i = 0; i < deleteBtn.length; i++) {
+    //     // deleteBtn[i].addEventListener('click', () => deleteItem(item));
+    //     deleteBtn[i].addEventListener('click', () => { console.log("hello") });
+    // }
+
+
+    // const deleteBtn = document.querySelectorAll(".cart__item__content__settings__delete")
+
+    // deleteBtn.forEach((bt) => {
+    //     bt.addEventListener('click', () => { console.log("hello") });
+    // })
+
+
+
+    // for (i = 0; i < deleteBtn.length; i++) {
+    //     // deleteBtn[i].addEventListener('click', () => deleteItem(item));
+    //     deleteBtn[i].addEventListener('click', () => { console.log("hello") });
+    // }
+
+    // let button = Array.prototype.slice.call(deleteBtn);
+    // console.log(button);
+
+    console.log(container.dataset);
+
+
+    // function deleteItem(item) {
+
+    //     // let index = storageCart.findIndex((product) => product.id === item.id && product.color === item.color)
+    //     // storageCart.splice(index, 1)
+
+    // }
 
 
 }
