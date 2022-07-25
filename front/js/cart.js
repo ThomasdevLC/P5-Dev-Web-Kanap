@@ -141,45 +141,4 @@ function addToCart(item, canapData) {
     totalPrice.textContent = totalPriceText
 
 
-
-
-
-
-
-
-
-    const deleteBtn = document.querySelectorAll(".cart__item__content__settings__delete")
-    // for (i = 0; i < deleteBtn.length; i++) {
-    //     // deleteBtn[i].addEventListener('click', () => deleteItem(item));
-    //     deleteBtn[i].addEventListener('click', () => { console.log("hello") });
-    // }
-
-
-    // const deleteBtn = document.querySelectorAll(".cart__item__content__settings__delete")
-
-    // deleteBtn.forEach((bt) => {
-    //     bt.addEventListener('click', () => { console.log("hello") });
-    // })
-
-
-
-    // for (i = 0; i < deleteBtn.length; i++) {
-    //     // deleteBtn[i].addEventListener('click', () => deleteItem(item));
-    //     deleteBtn[i].addEventListener('click', () => { console.log("hello") });
-    // }
-
-    // let button = Array.prototype.slice.call(deleteBtn);
-    // console.log(button);
-
-    console.log(container.dataset);
-
-
-    // function deleteItem(item) {
-
-    //     // let index = storageCart.findIndex((product) => product.id === item.id && product.color === item.color)
-    //     // storageCart.splice(index, 1)
-
-    // }
-
-
 }
