@@ -1,21 +1,27 @@
 
-let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
+displayPage()
 
-storageCart.forEach(item => {
-
-    let eachId = item.id
-
-    // get ID for each item
-    fetch(`http://localhost:3000/api/products/${eachId}`)
-        .then((res) => res.json()
-            .then(function (canapData) {
-                addToCart(item, canapData)
-            }));
-})
+async function displayPage() {
+    let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
 
 
-function addToCart(item, canapData) {
+    const products = await getProducts()
+    storageCart.forEach(item => {
+        const canapData = products.find((product) => product._id === item.id)
 
+        addToCart(item, canapData, products)
+    })
+    calculatePrices(storageCart, products);
+}
+
+
+async function getProducts() {
+    const canapData = await fetch(`http://localhost:3000/api/products/`);
+    return await canapData.json();
+}
+
+
+function addToCart(item, canapData, products) {
 
     const container = document.getElementById("cart__items");
 
@@ -76,23 +82,34 @@ function addToCart(item, canapData) {
     const displayQuantity = document.createElement("input");
     displayQuantity.classList.add("itemQuantity");
     displayQuantity.setAttribute("type", "Number");
+    displayQuantity.setAttribute("min", "1");
+    displayQuantity.setAttribute("max", "100");
 
     displayQuantity.value = item.quantity
 
 
     // UPDATE
-    displayQuantity.addEventListener("change", quantityUpdate)
 
-    function quantityUpdate(event) {
-        let input = event.target
-        if (isNaN(input.value) || input.value <= 0) {
-            input.value = 1
+    displayQuantity.addEventListener("change", function () {
+        let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
 
+        let newQty = parseInt(displayQuantity.value)
+
+        function update(productId, quantity, productColor) {
+            for (let item of storageCart) {
+                if (item.id == productId && item.color === productColor) {
+                    item.quantity = quantity
+                }
+            }
+            localStorage.setItem("canap_cart", JSON.stringify(storageCart))
         }
+        update(item.id, newQty, item.color)
 
-        console.log(input)
+        calculatePrices(storageCart, products)
 
-    }
+
+    })
+
 
 
 
@@ -115,30 +132,160 @@ function addToCart(item, canapData) {
     deleteText.appendChild(deleteTextDoc);
 
 
-    // CALCULATE TOTAL 
+    // DELETE BUTTON
 
+    const deleteButtons = document.querySelectorAll(".deleteItem")
+
+    // deleteButtons.addEventListener("click", function () {
+
+
+
+    // })
+
+}
+
+
+// CALCULATE TOTAL 
+
+function calculatePrices(storageCart, products) {
 
     const totalQty = document.getElementById("totalQuantity");
-
-    let total = 0
-    storageCart.forEach(item => {
-
-        let eachQty = item.quantity
-        total = total + eachQty
-    })
-    totalQty.textContent = total
-
-
     const totalPrice = document.getElementById("totalPrice");
 
-    let totalPriceText = 0
-    storageCart.forEach(item => {
 
-        let eachQty = item.quantity
-        totalPriceText = totalPriceText + (eachQty * canapData.price)
+    let totalPriceText = 0
+    let totalQuantity = 0
+    storageCart.forEach(item => {
+        const canapData = products.find((product) => product._id === item.id)
+        console.log(totalPriceText)
+
+        totalQuantity += item.quantity
+        totalPriceText = totalPriceText + (item.quantity * canapData.price)
     })
 
     totalPrice.textContent = totalPriceText
-
+    totalQty.textContent = totalQuantity
 
 }
+
+
+
+
+
+
+
+
+
+
+// -----------------------------------------------------------------
+
+
+function firstNameChecker(value) {
+    const firstNameInput = document.getElementById("firstName")
+    const errorDisplay = document.getElementById("firstNameErrorMsg")
+
+    if (firstNameInput.value.length < 2) {
+        errorDisplay.textContent = "champ non valide"
+    }
+
+    else if (!value.match(/^\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$/)) {
+        errorDisplay.textContent = "champ non valide"
+    }
+
+    else {
+        errorDisplay.textContent = "valide"
+    }
+
+}
+
+function lastNameChecker(value) {
+
+    const lastNameInput = document.getElementById("lastName")
+    const errorDisplay = document.getElementById("lastNameErrorMsg")
+
+    if (value.length < 2) {
+        errorDisplay.textContent = "champ non valide"
+    }
+
+    else if (!value.match(/^\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$/)) {
+        errorDisplay.textContent = "champ non valide"
+    }
+
+    else {
+        errorDisplay.textContent = "valide"
+    }
+
+}
+
+function addressChecker(value) {
+
+    const errorDisplay = document.getElementById("addressErrorMsg")
+
+    if (!value.match(/^[#.0-9a-zA-ZÀ-ÿ\s,-]{2,60}$/)) {
+        errorDisplay.textContent = "champ non valide"
+    }
+
+    else {
+        errorDisplay.textContent = "valide"
+    }
+
+}
+
+function cityChecker(value) {
+    const errorDisplay = document.getElementById("cityErrorMsg")
+
+    if (!value.match(/^\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$/)) {
+        errorDisplay.textContent = "champ non valide"
+    }
+
+    else {
+        errorDisplay.textContent = "valide"
+    }
+
+}
+
+
+
+
+function emailChecker(value) {
+
+    const errorDisplay = document.getElementById("emailErrorMsg")
+
+    if (!value.match(/^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$/)) {
+        errorDisplay.textContent = "champ non valide"
+    }
+
+    else {
+        errorDisplay.textContent = "valide"
+    }
+}
+
+const inputs = document.querySelectorAll('input[type="text"], input [type="password"], input [type="email"]');
+
+inputs.forEach((input) => {
+    input.addEventListener("input", (e) => {
+        switch (e.target.id) {
+
+            case "firstName":
+                firstNameChecker(e.target.value)
+                break;
+
+            case "lastName":
+                lastNameChecker(e.target.value)
+                break;
+
+            case "address":
+                addressChecker(e.target.value)
+                break;
+
+            case "city":
+                cityChecker(e.target.value)
+                break;
+
+            case "email":
+                emailChecker(e.target.value)
+                break;
+
+        }
+    });
+});

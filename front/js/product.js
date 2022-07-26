@@ -72,6 +72,7 @@ btn.addEventListener("click", () => {
 
     if (colorChoice == null || colorChoice === "" || inputQty == null || inputQty == 0) {
         alert("Veuillez selectionner une couleur et une quantité")
+
     }
 
     window.location.href = "index.html"
