@@ -191,11 +191,11 @@ function firstNameChecker(value) {
     const errorDisplay = document.getElementById("firstNameErrorMsg")
 
     if (firstNameInput.value.length < 2) {
-        errorDisplay.textContent = "champ non valide"
+        errorDisplay.textContent = "champ non valide - Votre prénom doit comporter au minimun 2 caractères "
     }
 
     else if (!value.match(/^\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$/)) {
-        errorDisplay.textContent = "champ non valide"
+        errorDisplay.textContent = "champ non valide - La première lettre doit etre une majuscule"
     }
 
     else {
@@ -205,15 +205,14 @@ function firstNameChecker(value) {
 
 function lastNameChecker(value) {
 
-    const lastNameInput = document.getElementById("lastName")
     const errorDisplay = document.getElementById("lastNameErrorMsg")
 
     if (value.length < 2) {
-        errorDisplay.textContent = "champ non valide"
+        errorDisplay.textContent = "champ non valide - Votre nom doit comporter au minimun 2 caractères"
     }
 
     else if (!value.match(/^\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$/)) {
-        errorDisplay.textContent = "champ non valide"
+        errorDisplay.textContent = "champ non valide - La première lettre doit etre une majuscule"
     }
     else {
         errorDisplay.textContent = "valide"
@@ -332,7 +331,7 @@ function submitForm(e) {
 
         .then((res) => res.json())
         .then((data) => {
-            // console.log(data)
+            console.log(data)
             const orderId = data.orderId
             window.location.href = "confirmation.html" + "?orderId=" + orderId
         })
