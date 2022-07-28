@@ -48,7 +48,6 @@ btn.addEventListener("click", () => {
 
 
     const findProductIndex = (element) => element.id === articleId && element.color === colorChoice;
-    let index = cart.findIndex(findProductIndex)
 
     const productIndex = cart.findIndex(findProductIndex)
 
