@@ -19,7 +19,6 @@ async function displayPage() {
 async function getProducts() {
     const canapData = await fetch(`http://localhost:3000/api/products/`);
     return await canapData.json();
-
 }
 
 
@@ -86,6 +85,12 @@ function addToCart(item, canapData, products) {
     displayQuantity.setAttribute("min", "1");
     displayQuantity.setAttribute("max", "100");
 
+    content.appendChild(quantityBox);
+    quantityBox.appendChild(quantity);
+    quantity.appendChild(quantityText);
+    quantityText.appendChild(quantityTextDoc);
+    quantity.appendChild(displayQuantity);
+
     displayQuantity.value = item.quantity
 
 
@@ -110,14 +115,8 @@ function addToCart(item, canapData, products) {
     })
 
 
-    content.appendChild(quantityBox);
-    quantityBox.appendChild(quantity);
-    quantity.appendChild(quantityText);
-    quantityText.appendChild(quantityTextDoc);
-    quantity.appendChild(displayQuantity);
-
-
     // DELETE DOM
+
     const deleteProd = document.createElement("div");
     deleteProd.classList.add("cart__item__content__settings__delete");
     const deleteText = document.createElement("p");
@@ -133,25 +132,33 @@ function addToCart(item, canapData, products) {
 
     deleteText.addEventListener("click", function () {
 
-        let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
-        const deleteItem = storageCart.findIndex((product) => product.id === item.id && product.color === item.color)
+        if (confirm("Etes vous sûr de vouloir supprimer cet article !")) {
 
-        function deleteProd(productId, productColor) {
-            for (let item of storageCart) {
-                if (item.id === productId && item.color === productColor) {
-                    storageCart.splice(deleteItem, 1)
+            let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
+            const deleteItem = storageCart.findIndex((product) => product.id === item.id && product.color === item.color)
+
+            function deleteProd(productId, productColor) {
+                for (let item of storageCart) {
+                    if (item.id === productId && item.color === productColor) {
+                        storageCart.splice(deleteItem, 1)
+                    }
                 }
+                localStorage.setItem("canap_cart", JSON.stringify(storageCart))
             }
-            localStorage.setItem("canap_cart", JSON.stringify(storageCart))
-        }
-        deleteProd(item.id, item.color)
+            deleteProd(item.id, item.color)
 
-        console.log("hello", deleteItem)
+            window.location.reload()
+
+        } else {
+            window.location.href = "cart.html"
+
+        }
+
     })
 }
 
 
-// CALCULATE TOTAL 
+// CALCULATE TOTAL PRICE
 
 function calculatePrices(storageCart, products) {
 
@@ -170,20 +177,12 @@ function calculatePrices(storageCart, products) {
     totalPrice.textContent = totalPriceText
     totalQty.textContent = totalQuantity
 
-
-
 }
 
 
 
 
-
-
-
-
-
-
-// -----------------------------------------------------------------
+// --------------------------FORM / REGEX-----------------------------
 
 
 function firstNameChecker(value) {
@@ -291,9 +290,7 @@ inputs.forEach((input) => {
 });
 
 
-// -----------------------------------------------------------------------
-
-
+// ----------------------------POST ORDER -------------------------------------------
 
 const submitButton = document.querySelector(".cart__order__form__submit")
 submitButton.addEventListener("click", (e) => submitForm(e))
@@ -330,12 +327,15 @@ function submitForm(e) {
         body: JSON.stringify(dataToFetch),
         headers: {
             "content-Type": "application/json",
-        },
+        }
     })
 
         .then((res) => res.json())
-        .then((data) => console.log(data))
-
+        .then((data) => {
+            // console.log(data)
+            const orderId = data.orderId
+            window.location.href = "confirmation.html" + "?orderId=" + orderId
+        })
 
 }
 
