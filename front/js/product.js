@@ -39,44 +39,50 @@ const displayArticle = (article) => {
 const btn = document.getElementById("addToCart");
 
 btn.addEventListener("click", () => {
+    alert("Article(s) ajouté(s) !")
+    if (confirm("Cliquez sur OK pour continuer vos achats, ou vous serez redirigé vers votre panier")) {
+        const colorChoice = document.getElementById("colors").value;
+        const inputQty = parseInt(document.getElementById("quantity").value)
 
-    const colorChoice = document.getElementById("colors").value;
-    const inputQty = parseInt(document.getElementById("quantity").value)
-
-    const storageCart = localStorage.getItem("canap_cart")
-    const cart = storageCart ? JSON.parse(storageCart) : [];
+        const storageCart = localStorage.getItem("canap_cart")
+        const cart = storageCart ? JSON.parse(storageCart) : [];
 
 
-    const findProductIndex = (element) => element.id === articleId && element.color === colorChoice;
+        const findProductIndex = (element) => element.id === articleId && element.color === colorChoice;
 
-    const productIndex = cart.findIndex(findProductIndex)
+        const productIndex = cart.findIndex(findProductIndex)
 
-    if (productIndex == -1) {
-        const dataChoice = {
-            id: articleId,
-            color: colorChoice,
-            quantity: inputQty,
+        if (productIndex == -1) {
+            const dataChoice = {
+                id: articleId,
+                color: colorChoice,
+                quantity: inputQty,
+            }
+            cart.push(dataChoice)
+
+        } else {
+
+            cart[productIndex].quantity += inputQty
         }
 
-        cart.push(dataChoice)
 
-    } else {
+        localStorage.setItem("canap_cart", JSON.stringify(cart))
 
-        cart[productIndex].quantity += inputQty
+        if (colorChoice == null || colorChoice === "" || inputQty == null || inputQty == 0) {
+            alert("Veuillez selectionner une couleur et une quantité")
+        }
 
+        window.location.href = "index.html"
     }
 
-
-    localStorage.setItem("canap_cart", JSON.stringify(cart))
-
-    if (colorChoice == null || colorChoice === "" || inputQty == null || inputQty == 0) {
-        alert("Veuillez selectionner une couleur et une quantité")
+    else {
+        window.location.href = "cart.html"
 
     }
-
-    window.location.href = "index.html"
-
 
 });
 
 
+
+    // else if (colorChoice == !null || colorChoice === !"" || inputQty == !null || inputQty == !0) {
+    //     alert("Veuillez selectionner une couleur et une quantité")}
