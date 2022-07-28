@@ -318,6 +318,7 @@ function submitForm(e) {
     const dataToFetch = {
         contact, products
     }
+
     console.log(dataToFetch)
 
 
@@ -332,6 +333,7 @@ function submitForm(e) {
         .then((res) => res.json())
         .then((data) => {
             console.log(data)
+
             const orderId = data.orderId
             window.location.href = "confirmation.html" + "?orderId=" + orderId
         })
