@@ -313,7 +313,7 @@ function submitForm(e) {
         email: email.value,
     }
 
-    const products = [idArray]
+    const products = idArray
 
     const dataToFetch = {
         contact, products
