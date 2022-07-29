@@ -3,10 +3,9 @@ init()
 async function init() {
     const products = await fetch('http://localhost:3000/api/products/');
     createArticle(await products.json());
-
 }
 
-
+// DISPLAY ALL PRODUCTS DOM
 const createArticle = (canaps) => {
 
     canaps.forEach((canap) => {
@@ -21,7 +20,6 @@ const createArticle = (canaps) => {
 
         image.setAttribute('src', canap.imageUrl);
         image.setAttribute('alt', canap.altTxt);
-
 
         const title = document.createElement("h3");
         title.classList.add("productName");
@@ -40,7 +38,6 @@ const createArticle = (canaps) => {
         container.appendChild(card);
 
     });
-
 }
 
 

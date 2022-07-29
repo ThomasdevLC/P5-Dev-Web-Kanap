@@ -180,8 +180,6 @@ function calculatePrices(storageCart, products) {
 }
 
 
-
-
 // --------------------------FORM / REGEX-----------------------------
 
 
