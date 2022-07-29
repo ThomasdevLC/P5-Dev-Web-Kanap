@@ -287,6 +287,7 @@ inputs.forEach((input) => {
 });
 
 
+
 // ----------------------------POST ORDER -------------------------------------------
 
 const submitButton = document.querySelector(".cart__order__form__submit")
@@ -294,7 +295,6 @@ submitButton.addEventListener("click", (e) => submitForm(e))
 
 function submitForm(e) {
     e.preventDefault()
-
 
     let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
     let idArray = []
@@ -319,7 +319,6 @@ function submitForm(e) {
 
     console.log(dataToFetch)
 
-
     fetch(`http://localhost:3000/api/products/order`, {
         method: "POST",
         body: JSON.stringify(dataToFetch),
@@ -327,13 +326,12 @@ function submitForm(e) {
             "content-Type": "application/json",
         }
     })
-
         .then((res) => res.json())
         .then((data) => {
             console.log(data)
 
             const orderId = data.orderId
-            window.location.href = "confirmation.html" + "?orderId=" + orderId
+            window.location.href = `confirmation.html?orderId=${orderId}`
         })
 
 }
