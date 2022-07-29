@@ -1,10 +1,10 @@
 
+// GET AND DISPLAY ORDER ID
 function displayOrderId() {
     const getOrderId = new URL(location.href).searchParams.get("orderId");
     document.getElementById("orderId").textContent = getOrderId
 
 }
-
 displayOrderId()
 
 
@@ -12,7 +12,6 @@ displayOrderId()
 //     window.localStorage.clear()
 
 // }
-
 // clearLocalStorage()
 
 

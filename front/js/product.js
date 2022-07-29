@@ -7,7 +7,7 @@ async function init() {
 
 init()
 
-
+// DISPLAY SELECTED PRODUCT DOM
 const displayArticle = (article) => {
 
     const itemImg = document.getElementById("item__img");
@@ -35,6 +35,8 @@ const displayArticle = (article) => {
 
 }
 
+
+// ADD PRODUCT TO CART
 const btn = document.getElementById("addToCart");
 
 btn.addEventListener("click", () => {
@@ -43,14 +45,15 @@ btn.addEventListener("click", () => {
     const inputQty = parseInt(document.getElementById("quantity").value)
 
     if (colorChoice == null || colorChoice === "" || inputQty == null || inputQty == 0) {
-        alert("Veuillez selectionner une couleur et une quantité")
+        alert("Veuillez renseigner une couleur et une quantité")
     }
 
     else {
+        btn.textContent = "Article(s) ajouté(s) !"
+        btn.style.color = "greenyellow";
 
         const storageCart = localStorage.getItem("canap_cart")
         const cart = storageCart ? JSON.parse(storageCart) : [];
-
 
         const findProductIndex = (element) => element.id === articleId && element.color === colorChoice;
 
@@ -71,14 +74,16 @@ btn.addEventListener("click", () => {
 
         localStorage.setItem("canap_cart", JSON.stringify(cart))
 
-        alert("Article(s) ajouté(s) !")
-        if (confirm("Cliquez sur OK pour continuer vos achats, ou vous serez redirigé vers votre panier")) {
-            window.location.href = "index.html"
-        }
-        else {
-            window.location.href = "cart.html"
+        setTimeout(() => {
+            if (confirm("Cliquez OK pour continuer vos achats, ou ANNULER pour être redirigé vers votre panier")) {
+                window.location.href = "index.html"
+            }
+            else {
+                window.location.href = "cart.html"
+            }
+        }, 800)
 
-        }
+
     }
 });
 

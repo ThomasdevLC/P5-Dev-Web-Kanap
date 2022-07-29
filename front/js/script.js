@@ -36,7 +36,6 @@ const createArticle = (canaps) => {
         article.appendChild(paragraphe);
         card.appendChild(article);
         container.appendChild(card);
-
     });
 }
 
