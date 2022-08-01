@@ -97,21 +97,7 @@ function addToCart(item, canapData, products) {
     // UPDATE QUANTITIES
 
     displayQuantity.addEventListener("change", function () {
-        let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
-
-        let newQty = parseInt(displayQuantity.value)
-
-        function update(productId, quantity, productColor) {
-            for (let item of storageCart) {
-                if (item.id == productId && item.color === productColor) {
-                    item.quantity = quantity
-                }
-            }
-            localStorage.setItem("canap_cart", JSON.stringify(storageCart))
-        }
-        update(item.id, newQty, item.color)
-
-        calculatePrices(storageCart, products)
+        update(displayQuantity, item, products)
     })
 
 
@@ -131,29 +117,7 @@ function addToCart(item, canapData, products) {
     // DELETE BUTTON
 
     deleteText.addEventListener("click", function () {
-
-        if (confirm("Etes vous sûr de vouloir supprimer cet article !")) {
-
-            let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
-            const deleteItem = storageCart.findIndex((product) => product.id === item.id && product.color === item.color)
-
-            function deleteProd(productId, productColor) {
-                for (let item of storageCart) {
-                    if (item.id === productId && item.color === productColor) {
-                        storageCart.splice(deleteItem, 1)
-                    }
-                }
-                localStorage.setItem("canap_cart", JSON.stringify(storageCart))
-            }
-            deleteProd(item.id, item.color)
-
-            window.location.reload()
-
-        } else {
-            window.location.href = "cart.html"
-
-        }
-
+        deleteCanap(item)
     })
 }
 
@@ -176,7 +140,6 @@ function calculatePrices(storageCart, products) {
 
     totalPrice.textContent = totalPriceText
     totalQty.textContent = totalQuantity
-
 }
 
 
@@ -317,7 +280,7 @@ function submitForm(e) {
         contact, products
     }
 
-    console.log(dataToFetch)
+    // console.log(dataToFetch)
 
     fetch(`http://localhost:3000/api/products/order`, {
         method: "POST",
@@ -328,12 +291,58 @@ function submitForm(e) {
     })
         .then((res) => res.json())
         .then((data) => {
-            console.log(data)
 
             const orderId = data.orderId
             window.location.href = `confirmation.html?orderId=${orderId}`
         })
-
 }
 
 
+
+// UPDATE QUANTITIES
+
+function update(displayQuantity, item, products) {
+
+    let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
+
+    const newQty = parseInt(displayQuantity.value)
+
+    function update(productId, quantity, productColor) {
+        for (let item of storageCart) {
+            if (item.id === productId && item.color === productColor) {
+                item.quantity = quantity
+            }
+        }
+        localStorage.setItem("canap_cart", JSON.stringify(storageCart))
+    }
+    update(item.id, newQty, item.color)
+
+    calculatePrices(storageCart, products)
+}
+
+// DELETE BUTTON
+
+function deleteCanap(item) {
+
+    if (confirm("Etes vous sûr de vouloir supprimer cet article !")) {
+
+        let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
+        const deleteItem = storageCart.findIndex((product) => product.id === item.id && product.color === item.color)
+
+        function deleteProd(productId, productColor) {
+            for (let item of storageCart) {
+                if (item.id === productId && item.color === productColor) {
+                    storageCart.splice(deleteItem, 1)
+                }
+            }
+            localStorage.setItem("canap_cart", JSON.stringify(storageCart))
+        }
+        deleteProd(item.id, item.color)
+
+        window.location.reload()
+
+    } else {
+        window.location.href = "cart.html"
+    }
+
+}

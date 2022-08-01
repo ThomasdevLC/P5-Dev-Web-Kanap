@@ -8,7 +8,7 @@ async function init() {
 init()
 
 // DISPLAY SELECTED PRODUCT DOM
-const displayArticle = (article) => {
+function displayArticle(article) {
 
     const itemImg = document.getElementById("item__img");
     const image = document.createElement("img");
@@ -82,7 +82,6 @@ btn.addEventListener("click", () => {
                 window.location.href = "cart.html"
             }
         }, 800)
-
 
     }
 });

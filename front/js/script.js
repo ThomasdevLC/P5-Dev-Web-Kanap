@@ -6,7 +6,7 @@ async function init() {
 }
 
 // DISPLAY ALL PRODUCTS DOM
-const createArticle = (canaps) => {
+function createArticle(canaps) {
 
     canaps.forEach((canap) => {
 
