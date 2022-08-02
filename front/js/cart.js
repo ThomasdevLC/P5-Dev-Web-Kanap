@@ -1,25 +1,25 @@
 
 displayPage()
 
-async function displayPage() {
-    let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
-
-    const products = await getProducts()
-    storageCart.forEach(item => {
-        const canapData = products.find((product) => product._id === item.id)
-
-        addToCart(item, canapData, products)
-
-    })
-    calculatePrices(storageCart, products);
-
-}
-
-
 async function getProducts() {
     const canapData = await fetch(`http://localhost:3000/api/products/`);
     return await canapData.json();
 }
+
+
+async function displayPage() {
+    let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
+
+    const products = await getProducts()
+
+    storageCart.forEach(item => {
+        const canapData = products.find((product) => product._id === item.id)
+
+        addToCart(item, canapData, products)
+    })
+    calculatePrices(storageCart, products);
+}
+
 
 
 function addToCart(item, canapData, products) {
@@ -153,6 +153,7 @@ function firstNameChecker(value) {
 
     if (firstNameInput.value.length < 2) {
         errorDisplay.textContent = "champ non valide - Votre prénom doit comporter au minimun 2 caractères "
+
     }
 
     else if (!value.match(/^\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$/)) {
@@ -161,6 +162,7 @@ function firstNameChecker(value) {
 
     else {
         errorDisplay.textContent = "valide"
+        errorDisplay.style.color = "greenyellow";
     }
 }
 
@@ -177,6 +179,8 @@ function lastNameChecker(value) {
     }
     else {
         errorDisplay.textContent = "valide"
+        errorDisplay.style.color = "greenyellow";
+
     }
 }
 
@@ -189,6 +193,8 @@ function addressChecker(value) {
     }
     else {
         errorDisplay.textContent = "valide"
+        errorDisplay.style.color = "greenyellow";
+
     }
 }
 
@@ -201,6 +207,8 @@ function cityChecker(value) {
 
     else {
         errorDisplay.textContent = "valide"
+        errorDisplay.style.color = "greenyellow";
+
     }
 }
 
@@ -214,6 +222,8 @@ function emailChecker(value) {
 
     else {
         errorDisplay.textContent = "valide"
+        errorDisplay.style.color = "greenyellow";
+
     }
 }
 
@@ -253,7 +263,7 @@ inputs.forEach((input) => {
 
 // ----------------------------POST ORDER -------------------------------------------
 
-const submitButton = document.querySelector(".cart__order__form__submit")
+const submitButton = document.getElementById("order")
 submitButton.addEventListener("click", (e) => submitForm(e))
 
 function submitForm(e) {
@@ -280,8 +290,6 @@ function submitForm(e) {
         contact, products
     }
 
-    // console.log(dataToFetch)
-
     fetch(`http://localhost:3000/api/products/order`, {
         method: "POST",
         body: JSON.stringify(dataToFetch),
@@ -291,12 +299,10 @@ function submitForm(e) {
     })
         .then((res) => res.json())
         .then((data) => {
-
             const orderId = data.orderId
             window.location.href = `confirmation.html?orderId=${orderId}`
         })
 }
-
 
 
 // UPDATE QUANTITIES
@@ -305,7 +311,7 @@ function update(displayQuantity, item, products) {
 
     let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
 
-    const newQty = parseInt(displayQuantity.value)
+    const newQuantity = parseInt(displayQuantity.value)
 
     function update(productId, quantity, productColor) {
         for (let item of storageCart) {
@@ -315,7 +321,7 @@ function update(displayQuantity, item, products) {
         }
         localStorage.setItem("canap_cart", JSON.stringify(storageCart))
     }
-    update(item.id, newQty, item.color)
+    update(item.id, newQuantity, item.color)
 
     calculatePrices(storageCart, products)
 }
