@@ -44,8 +44,8 @@ btn.addEventListener("click", () => {
     const colorChoice = document.getElementById("colors").value;
     const inputQty = parseInt(document.getElementById("quantity").value)
 
-    if (colorChoice == null || colorChoice === "" || inputQty == null || inputQty == 0 || inputQty > 100) {
-        alert("Veuillez renseigner une couleur et une quantité inferieur à 100")
+    if (!colorChoice || colorChoice === "" || !inputQty || inputQty <= 0 || inputQty > 100) {
+        alert("Veuillez renseigner une couleur et une quantité entre 0 et 100")
     }
 
     else {
@@ -85,4 +85,5 @@ btn.addEventListener("click", () => {
 
     }
 });
+
 
