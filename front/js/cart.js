@@ -208,7 +208,7 @@ function cityChecker(value) {
 function emailChecker(value) {
     const errorDisplay = document.getElementById("emailErrorMsg")
 
-    if (!value.match(/^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$/)) {
+    if (!value.match(/^[_a-z0-9-]+[\._a-z0-9-]*@[a-z0-9-]+[.a-z0-9-]*\.[a-z]{2,4}$/)) {
         errorDisplay.textContent = "champ non valide"
     }
 
