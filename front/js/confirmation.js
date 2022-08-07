@@ -8,11 +8,11 @@ function displayOrderId() {
 displayOrderId()
 
 
-// function clearLocalStorage() {
-//     window.localStorage.clear()
+function clearLocalStorage() {
+    window.localStorage.clear()
 
-// }
-// clearLocalStorage()
+}
+clearLocalStorage()
 
 
 

@@ -8,21 +8,22 @@ async function getProducts() {
 
 
 async function displayPage() {
-    let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
-
+    const storageCart = JSON.parse(localStorage.getItem("canap_cart"));
     const products = await getProducts()
-
-    storageCart.forEach(item => {
-        const canapData = products.find((product) => product._id === item.id)
-
-        addToCart(item, canapData, products)
-    })
+    displayArticles(storageCart, products)
     calculatePrices(storageCart, products);
 }
 
+function displayArticles(cart, products) {
+    cart.forEach(cartItem => {
+        const article = products.find((product) => product._id === cartItem.id)
+
+        displayArticle(cartItem, article, products)
+    })
+}
 
 
-function addToCart(item, canapData, products) {
+function displayArticle(item, canapData, products) {
 
     const container = document.getElementById("cart__items");
 
@@ -94,6 +95,7 @@ function addToCart(item, canapData, products) {
     displayQuantity.value = item.quantity
 
 
+
     // UPDATE QUANTITIES
 
     displayQuantity.addEventListener("change", function () {
@@ -146,84 +148,116 @@ function calculatePrices(storageCart, products) {
 // --------------------------FORM / REGEX-----------------------------
 
 
-function firstNameChecker(value) {
+function isFirstNameValid() {
 
     const firstNameInput = document.getElementById("firstName")
     const errorDisplay = document.getElementById("firstNameErrorMsg")
+    errorDisplay.style.fontWeight = "700"
+
+
 
     if (firstNameInput.value.length < 2) {
         errorDisplay.textContent = "champ non valide - Votre prénom doit comporter au minimun 2 caractères "
-
+        errorDisplay.style.color = "#d35400"
+        return false;
     }
 
-    else if (!value.match(/^\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$/)) {
+    else if (!firstNameInput.value.match(/^\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$/)) {
         errorDisplay.textContent = "champ non valide - La première lettre doit etre une majuscule"
+        errorDisplay.style.color = "#d35400"
+        return false;
+
     }
 
     else {
         errorDisplay.textContent = "valide"
         errorDisplay.style.color = "greenyellow";
+        return true;
+
     }
 }
 
-function lastNameChecker(value) {
-
+function isLastNameValid() {
+    const lastNameInput = document.getElementById("lastName")
     const errorDisplay = document.getElementById("lastNameErrorMsg")
+    errorDisplay.style.fontWeight = "700"
 
-    if (value.length < 2) {
+
+
+    if (lastNameInput.value.length < 2) {
         errorDisplay.textContent = "champ non valide - Votre nom doit comporter au minimun 2 caractères"
+        errorDisplay.style.color = "#d35400"
+        return false;
+
     }
 
-    else if (!value.match(/^\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$/)) {
+    else if (!lastNameInput.value.match(/^\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$/)) {
         errorDisplay.textContent = "champ non valide - La première lettre doit etre une majuscule"
+        errorDisplay.style.color = "#d35400"
+        return false;
     }
     else {
         errorDisplay.textContent = "valide"
         errorDisplay.style.color = "greenyellow";
-
+        return true;
     }
 }
 
-function addressChecker(value) {
-
+function isAddressValid() {
+    const addressInput = document.getElementById("address")
     const errorDisplay = document.getElementById("addressErrorMsg")
+    errorDisplay.style.fontWeight = "700"
 
-    if (!value.match(/^[#.0-9a-zA-ZÀ-ÿ\s,-]{2,60}$/)) {
+
+
+    if (!addressInput.value.match(/^[#.0-9a-zA-ZÀ-ÿ\s,-]{2,60}$/)) {
         errorDisplay.textContent = "champ non valide"
+        errorDisplay.style.color = "#d35400"
+        return false;
+
     }
     else {
         errorDisplay.textContent = "valide"
         errorDisplay.style.color = "greenyellow";
-
+        return true;
     }
 }
 
-function cityChecker(value) {
+function isCityValid() {
+    const cityInput = document.getElementById("city")
     const errorDisplay = document.getElementById("cityErrorMsg")
+    errorDisplay.style.fontWeight = "700"
 
-    if (!value.match(/^\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$/)) {
+
+    if (!cityInput.value.match(/^\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$/)) {
         errorDisplay.textContent = "champ non valide"
+        errorDisplay.style.color = "#d35400"
+        return false;
     }
 
     else {
         errorDisplay.textContent = "valide"
         errorDisplay.style.color = "greenyellow";
-
+        return true;
     }
 }
 
-
-function emailChecker(value) {
+function isEmailValid() {
+    const emailInput = document.getElementById("email")
     const errorDisplay = document.getElementById("emailErrorMsg")
+    errorDisplay.style.fontWeight = "700"
 
-    if (!value.match(/^[_a-z0-9-]+[\._a-z0-9-]*@[a-z0-9-]+[.a-z0-9-]*\.[a-z]{2,4}$/)) {
+
+    if (!emailInput.value.match(/^[_a-z0-9-]+[\._a-z0-9-]*@[a-z0-9-]+[.a-z0-9-]*\.[a-z]{2,4}$/)) {
         errorDisplay.textContent = "champ non valide"
+        errorDisplay.style.color = "#d35400"
+        return false;
     }
 
     else {
         errorDisplay.textContent = "valide"
         errorDisplay.style.color = "greenyellow";
-
+        return true;
     }
 }
 
@@ -235,23 +269,23 @@ inputs.forEach((input) => {
         switch (e.target.id) {
 
             case "firstName":
-                firstNameChecker(e.target.value)
+                isFirstNameValid()
                 break;
 
             case "lastName":
-                lastNameChecker(e.target.value)
+                isLastNameValid()
                 break;
 
             case "address":
-                addressChecker(e.target.value)
+                isAddressValid()
                 break;
 
             case "city":
-                cityChecker(e.target.value)
+                isCityValid()
                 break;
 
             case "email":
-                emailChecker(e.target.value)
+                isEmailValid()
                 break;
             default:
                 null;
@@ -265,46 +299,63 @@ inputs.forEach((input) => {
 
 const submitButton = document.getElementById("order")
 submitButton.addEventListener("click", (e) => submitForm(e))
+const storageCart = JSON.parse(localStorage.getItem("canap_cart"));
+
+const totalQty = document.getElementById("totalQuantity");
+
 
 function submitForm(e) {
     e.preventDefault()
 
-    let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
-    let idArray = []
-    storageCart.forEach((item) => {
-        let productId = item.id
-        idArray.push(productId)
-    })
-
-    const contact = {
-        firstName: firstName.value,
-        lastName: lastName.value,
-        address: address.value,
-        city: city.value,
-        email: email.value,
+    if (storageCart.length === 0 || storageCart == null) {
+        alert("Votre panier est vide")
     }
 
-    const products = idArray
+    else if (isFirstNameValid() && isLastNameValid() && isAddressValid() && isCityValid() && isEmailValid()) {
+        {
+            let storageCart = JSON.parse(localStorage.getItem("canap_cart"));
+            let idArray = []
+            storageCart.forEach((item) => {
+                let productId = item.id
+                idArray.push(productId)
+            })
 
-    const dataToFetch = {
-        contact, products
-    }
+            const contact = {
+                firstName: firstName.value,
+                lastName: lastName.value,
+                address: address.value,
+                city: city.value,
+                email: email.value,
+            }
 
-    fetch(`http://localhost:3000/api/products/order`, {
-        method: "POST",
-        body: JSON.stringify(dataToFetch),
-        headers: {
-            "content-Type": "application/json",
+            const products = idArray
+
+            const dataToFetch = {
+                contact, products
+            }
+
+            fetch(`http://localhost:3000/api/products/order`, {
+                method: "POST",
+                body: JSON.stringify(dataToFetch),
+                headers: {
+                    "content-Type": "application/json",
+                }
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    const orderId = data.orderId
+                    window.location.href = `confirmation.html?orderId=${orderId}`
+                })
         }
-    })
-        .then((res) => res.json())
-        .then((data) => {
-            const orderId = data.orderId
-            window.location.href = `confirmation.html?orderId=${orderId}`
-        })
+    }
+
+    else {
+        alert("Veuillez renseigner tous les champs du formulaire")
+    }
+
+
+
 }
-
-
 // UPDATE QUANTITIES
 
 function update(displayQuantity, item, products) {
@@ -350,5 +401,4 @@ function deleteCanap(item) {
     } else {
         window.location.href = "cart.html"
     }
-
 }
